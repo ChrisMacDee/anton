@@ -41,7 +41,7 @@ You ←→ Claude Code (Sonnet)        Claude Code (Opus) → Built App
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/anton.git ~/anton
-echo 'export PATH="$HOME/anton/bin:$PATH"' >> ~/.bashrc
+echo 'export PATH="$HOME/anton/agent-team/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
