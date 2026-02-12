@@ -104,7 +104,8 @@ Guide the user through requirements gathering. When complete, save:
 - ./docs/tasks.md (task dependency graph for the build phase)
 
 Make sure tasks.md clearly marks which tasks can run in parallel
-and which have dependencies."
+and which have dependencies." \
+    "Hi! I'm ready to start building something. Let's go!"
 }
 
 cmd_build() {
@@ -138,8 +139,7 @@ $type_context"
     echo "🚀 Starting autonomous build ($model) — detached"
 
     nohup claude --model "$model" \
-      --print \
-      --prompt "$prompt" \
+      -p "$prompt" \
       > build.log 2>&1 &
 
     local build_pid=$!
@@ -154,7 +154,7 @@ $type_context"
     fi
   else
     echo "🚀 Starting autonomous build ($model)"
-    claude --model "$model" --prompt "$prompt"
+    claude --model "$model" -p "$prompt"
   fi
 }
 
@@ -181,8 +181,7 @@ cmd_resume() {
     echo "🔄 Resuming build ($model) — detached"
 
     nohup claude --model "$model" \
-      --print \
-      --prompt "$prompt" \
+      -p "$prompt" \
       > build.log 2>&1 &
 
     local build_pid=$!
@@ -194,7 +193,7 @@ cmd_resume() {
     fi
   else
     echo "🔄 Resuming build ($model)"
-    claude --model "$model" --prompt "$prompt"
+    claude --model "$model" -p "$prompt"
   fi
 }
 
@@ -203,7 +202,7 @@ cmd_review() {
   local model=$(get_config '.phases.interactive.model')
 
   echo "🔍 Starting review session ($model)"
-  claude --model "$model" --prompt \
+  claude --model "$model" -p \
     "You are reviewing a completed autonomous build. Read these files:
 - HANDOFF.md (build summary)
 - .agent-state.json (checkpoint state)
