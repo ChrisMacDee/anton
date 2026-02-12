@@ -1,0 +1,72 @@
+{
+  "projectType": "react-ghpages",
+  "teamDir": "",
+  "phases": {
+    "interactive": {
+      "model": "claude-sonnet-4-20250514",
+      "description": "Requirements gathering and review — conversational, cost-effective"
+    },
+    "build": {
+      "model": "claude-opus-4-20250514",
+      "description": "Autonomous implementation — maximum code quality"
+    }
+  },
+  "agents": {
+    "jared": {
+      "prompt": "orchestrator.md",
+      "role": "Orchestrator",
+      "description": "Jared Dunn — Coordinates tasks, manages state, keeps the team functioning"
+    },
+    "monica": {
+      "prompt": "pm.md",
+      "role": "Product Manager",
+      "description": "Monica Hall — Gathers requirements, produces PRD, voice of the user"
+    },
+    "richard": {
+      "prompt": "architect.md",
+      "role": "Architect",
+      "description": "Richard Hendricks — System design, component tree, elegant technical vision"
+    },
+    "dinesh": {
+      "prompt": "dinesh.md",
+      "role": "Frontend Developer",
+      "description": "Dinesh Chugtai — UI components, hooks, styles. Solid coder, competitive."
+    },
+    "carla": {
+      "prompt": "carla.md",
+      "role": "Senior Frontend Developer",
+      "description": "Carla Walton — Complex components, performance-sensitive code. No-nonsense."
+    },
+    "gilfoyle": {
+      "prompt": "qa-reviewer.md",
+      "role": "QA Reviewer & DevOps",
+      "description": "Bertram Gilfoyle — Code review, CI/CD, deployment. Brutally thorough."
+    },
+    "erlich": {
+      "prompt": "erlich.md",
+      "role": "Stakeholder & Scope Guardian",
+      "description": "Erlich Bachman — Scope decisions, product narrative, the uncomfortable cuts."
+    },
+    "jian-yang": {
+      "prompt": "jian-yang.md",
+      "role": "Edge Case & Chaos Agent",
+      "description": "Jian-Yang — Breaks things. Input chaos, layout edge cases, accessibility audit."
+    }
+  },
+  "build": {
+    "maxRetries": 3,
+    "checkpoints": true,
+    "parallelSubagents": true
+  },
+  "notifications": {
+    "method": "ntfy",
+    "ntfyTopic": "anton-builds",
+    "pushover": {
+      "appToken": "",
+      "userKey": ""
+    },
+    "discord": {
+      "webhookUrl": ""
+    }
+  }
+}

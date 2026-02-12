@@ -1,0 +1,22 @@
+node_modules/
+dist/
+build/
+.env
+.env.local
+.env.*.local
+
+# Agent team build artifacts
+build.log
+.build.pid
+.agent-state.json
+.agent-outputs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
