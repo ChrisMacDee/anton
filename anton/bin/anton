@@ -113,9 +113,20 @@ cmd_build() {
   local model=$(get_config '.phases.build.model')
   local project_type=$(get_config '.projectType')
   local detach=false
+  local step=false
 
-  if [ "${1:-}" = "--detach" ]; then
-    detach=true
+  # Parse flags
+  for arg in "$@"; do
+    case "$arg" in
+      --detach) detach=true ;;
+      --step)   step=true ;;
+    esac
+  done
+
+  # --step flag overrides config to enable pauseBetweenPhases for this run
+  if [ "$step" = true ]; then
+    local tmp=$(jq '.build.pauseBetweenPhases = true' .agent-config.json)
+    echo "$tmp" > .agent-config.json
   fi
 
   # Check prerequisites
@@ -137,6 +148,7 @@ $type_context"
     local ntfy_topic=$(get_config '.notifications.ntfyTopic // empty')
 
     echo "🚀 Starting autonomous build ($model) — detached"
+    [ "$step" = true ] && echo "   ⏸️  Step mode: will pause after each phase"
 
     nohup claude --model "$model" \
       -p "$prompt" \
@@ -154,6 +166,7 @@ $type_context"
     fi
   else
     echo "🚀 Starting autonomous build ($model)"
+    [ "$step" = true ] && echo "   ⏸️  Step mode: will pause after each phase"
     claude --model "$model" "$prompt"
   fi
 }
@@ -240,7 +253,7 @@ cmd_logs() {
 case "${1:-help}" in
   init)         cmd_init "${2:-}" "${3:-}" ;;
   interactive)  cmd_interactive ;;
-  build)        cmd_build "${2:-}" ;;
+  build)        shift; cmd_build "$@" ;;
   resume)       cmd_resume "${2:-}" ;;
   review)       cmd_review ;;
   status)       cmd_status ;;
@@ -258,7 +271,7 @@ case "${1:-help}" in
     echo ""
     echo "Workflow:"
     echo "  interactive           Requirements gathering session (you + Sonnet)"
-    echo "  build [--detach]      Autonomous build phase (Opus)"
+    echo "  build [--detach] [--step]  Autonomous build phase (Opus)"
     echo "  resume [--detach]     Resume interrupted build"
     echo "  review                Interactive review of completed build"
     echo ""

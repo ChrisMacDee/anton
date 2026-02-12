@@ -20,6 +20,19 @@ Read the agent prompts at `{{TEAM_DIR}}/prompts/` to understand each role:
 - **Task Graph**: `./docs/tasks.md` — build order and dependencies
 - **Config**: `.agent-config.json` — model and notification settings
 
+## Pause Between Phases
+
+Check `.agent-config.json` for `build.pauseBetweenPhases`. If it is `true`, you MUST stop after completing each phase:
+
+1. Print the phase's `CHECKPOINT:` line as normal
+2. Save current state to `.agent-state.json` with `resumePoint` set to the **next** phase name
+3. Commit all work-in-progress to git
+4. Write `HANDOFF.md` explaining what was completed and what phase comes next
+5. Print `PAUSED: Phase <N> complete. Run 'anton resume' to continue with Phase <N+1>.`
+6. **Stop working.** Do NOT proceed to the next phase.
+
+The user will review the work and run `anton resume` when ready to continue. If `pauseBetweenPhases` is `false` or not set, run all phases continuously as normal.
+
 ## Build Process
 
 ### Phase 1: Setup
