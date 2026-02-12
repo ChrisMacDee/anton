@@ -154,7 +154,7 @@ $type_context"
     fi
   else
     echo "🚀 Starting autonomous build ($model)"
-    claude --model "$model" -p "$prompt"
+    claude --model "$model" "$prompt"
   fi
 }
 
@@ -193,7 +193,7 @@ cmd_resume() {
     fi
   else
     echo "🔄 Resuming build ($model)"
-    claude --model "$model" -p "$prompt"
+    claude --model "$model" "$prompt"
   fi
 }
 
@@ -202,7 +202,7 @@ cmd_review() {
   local model=$(get_config '.phases.interactive.model')
 
   echo "🔍 Starting review session ($model)"
-  claude --model "$model" -p \
+  claude --model "$model" \
     "You are reviewing a completed autonomous build. Read these files:
 - HANDOFF.md (build summary)
 - .agent-state.json (checkpoint state)
