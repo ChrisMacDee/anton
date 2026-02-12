@@ -71,6 +71,10 @@ anton build
 
 # Or detach and get a phone notification when done
 anton build --detach
+
+# Step mode: pause after each phase so you can review progress
+anton build --step
+anton build --step --detach
 ```
 
 ### 5. Check Progress
@@ -153,7 +157,8 @@ Each project gets an `.agent-config.json`:
   "build": {
     "maxRetries": 3,
     "checkpoints": true,
-    "parallelSubagents": true
+    "parallelSubagents": true,
+    "pauseBetweenPhases": false            // true = stop after each phase for review
   },
   "notifications": {
     "method": "ntfy",                         // ntfy | pushover | discord
@@ -209,6 +214,28 @@ Install the [ntfy app](https://ntfy.sh/) and subscribe to your topic.
 }
 ```
 
+## Step Mode (Pause Between Phases)
+
+By default, the build runs all 7 phases continuously. If you want to review the work after each phase before continuing, enable **step mode**:
+
+```bash
+# Via CLI flag (one-off)
+anton build --step
+
+# Or set permanently in .agent-config.json
+"build": {
+  "pauseBetweenPhases": true
+}
+```
+
+When step mode is active, the build will:
+1. Complete the current phase
+2. Save state and commit all work
+3. Print `PAUSED: Phase N complete. Run 'anton resume' to continue.`
+4. Stop and wait for you
+
+Review the output with `anton status`, check the code, then `anton resume` to continue to the next phase.
+
 ## Checkpointing & Resume
 
 The framework saves progress after every completed task. If Claude Code hits usage limits or the process is interrupted:
@@ -244,7 +271,7 @@ anton help             Show usage
 anton init <dir> <type>  Scaffold a new project
 anton list-types       Show available project types
 anton interactive      Start requirements session
-anton build [--detach] Run autonomous build
+anton build [--detach] [--step] Run autonomous build
 anton resume [--detach] Resume interrupted build
 anton review           Review completed build
 anton status           Check build progress

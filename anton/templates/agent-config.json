@@ -56,7 +56,8 @@
   "build": {
     "maxRetries": 3,
     "checkpoints": true,
-    "parallelSubagents": true
+    "parallelSubagents": true,
+    "pauseBetweenPhases": false
   },
   "notifications": {
     "method": "ntfy",
